@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Country Frequency Map</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    body { margin: 0; background: #ffffff; font-family: sans-serif; }
+    #map { width: 100vw; height: 100vh; }
+    h1 { color: #222; text-align: center; margin: 0; padding: 12px 0 0; font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+  <h1>Country Frequency Map</h1>
+  <div id="map"></div>
+  <script>
+    const data = [
+      { country: "Finland",          iso: "FIN", freq: 142 },
+      { country: "Denmark",          iso: "DNK", freq: 85  },
+      { country: "Norway",           iso: "NOR", freq: 71  },
+      { country: "Sweden",           iso: "SWE", freq: 67  },
+      { country: "United Kingdom",   iso: "GBR", freq: 61  },
+      { country: "Germany",          iso: "DEU", freq: 35  },
+      { country: "Estonia",          iso: "EST", freq: 29  },
+      { country: "Poland",           iso: "POL", freq: 26  },
+      { country: "Italy",            iso: "ITA", freq: 13  },
+      { country: "Iceland",          iso: "ISL", freq: 13  },
+      { country: "United States",    iso: "USA", freq: 8   },
+      { country: "Spain",            iso: "ESP", freq: 8   },
+      { country: "Nigeria",          iso: "NGA", freq: 8   },
+      { country: "India",            iso: "IND", freq: 7   },
+      { country: "Kenya",            iso: "KEN", freq: 6   },
+      { country: "Uganda",           iso: "UGA", freq: 3   },
+      { country: "France",           iso: "FRA", freq: 3   },
+      { country: "Austria",          iso: "AUT", freq: 3   },
+      { country: "South Africa",     iso: "ZAF", freq: 2   },
+      { country: "Singapore",        iso: "SGP", freq: 2   },
+      { country: "Portugal",         iso: "PRT", freq: 2   },
+      { country: "Peru",             iso: "PER", freq: 2   },
+      { country: "Pakistan",         iso: "PAK", freq: 2   },
+      { country: "Netherlands",      iso: "NLD", freq: 2   },
+      { country: "Ghana",            iso: "GHA", freq: 2   },
+      { country: "Côte d'Ivoire",    iso: "CIV", freq: 2   },
+      { country: "Chile",            iso: "CHL", freq: 2   },
+      { country: "Uruguay",          iso: "URY", freq: 1   },
+      { country: "Ukraine",          iso: "UKR", freq: 1   },
+      { country: "Türkiye",          iso: "TUR", freq: 1   },
+      { country: "Togo",             iso: "TGO", freq: 1   },
+      { country: "South Sudan",      iso: "SSD", freq: 1   },
+      { country: "Somalia",          iso: "SOM", freq: 1   },
+      { country: "Romania",          iso: "ROU", freq: 1   },
+      { country: "Qatar",            iso: "QAT", freq: 1   },
+      { country: "Mali",             iso: "MLI", freq: 1   },
+      { country: "Malaysia",         iso: "MYS", freq: 1   },
+      { country: "Lithuania",        iso: "LTU", freq: 1   },
+      { country: "Jordan",           iso: "JOR", freq: 1   },
+      { country: "Japan",            iso: "JPN", freq: 1   },
+      { country: "Israel",           iso: "ISR", freq: 1   },
+      { country: "Iran",             iso: "IRN", freq: 1   },
+      { country: "Indonesia",        iso: "IDN", freq: 1   },
+      { country: "Gambia",           iso: "GMB", freq: 1   },
+      { country: "Ethiopia",         iso: "ETH", freq: 1   },
+      { country: "Czechia",          iso: "CZE", freq: 1   },
+      { country: "Congo - Kinshasa", iso: "COD", freq: 1   },
+      { country: "China",            iso: "CHN", freq: 1   },
+      { country: "Cameroon",         iso: "CMR", freq: 1   },
+      { country: "Burundi",          iso: "BDI", freq: 1   },
+      { country: "Brazil",           iso: "BRA", freq: 1   },
+      { country: "Belgium",          iso: "BEL", freq: 1   },
+      { country: "Bangladesh",       iso: "BGD", freq: 1   },
+      { country: "Argentina",        iso: "ARG", freq: 1   },
+      { country: "Afghanistan",      iso: "AFG", freq: 1   },
+    ];
+
+    const locations = data.map(d => d.iso);
+    const z        = data.map(d => d.freq);
+    const text     = data.map(d => `${d.country}<br>Frequency: ${d.freq}`);
+
+    const trace = {
+      type: "choropleth",
+      locations,
+      z,
+      text,
+      hovertemplate: "%{text}<extra></extra>",
+      colorscale: [
+        [0,    "#ffffcc"],
+        [0.05, "#fed976"],
+        [0.15, "#fd8d3c"],
+        [0.35, "#f03b20"],
+        [0.65, "#bd0026"],
+        [1,    "#67000d"]
+      ],
+      zmin: 0,
+      zmax: 142,
+      colorbar: {
+        title: { text: "Frequency", font: { color: "#222" } },
+        tickfont: { color: "#222" },
+        bgcolor: "rgba(255,255,255,0)",
+        outlinecolor: "#aaa"
+      },
+      marker: { line: { color: "#999", width: 0.5 } }
+    };
+
+    const layout = {
+      geo: {
+        showframe: false,
+        showcoastlines: true,
+        coastlinecolor: "#888",
+        showland: true,
+        landcolor: "#f0f0f0",
+        showocean: true,
+        oceancolor: "#cde5f5",
+        showlakes: true,
+        lakecolor: "#cde5f5",
+        showcountries: true,
+        countrycolor: "#aaa",
+        projection: { type: "natural earth" }
+      },
+      paper_bgcolor: "#ffffff",
+      plot_bgcolor:  "#ffffff",
+      margin: { t: 10, b: 10, l: 0, r: 0 },
+      font: { color: "#222" }
+    };
+
+    Plotly.newPlot("map", [trace], layout, { responsive: true, displayModeBar: false });
+  </script>
+</body>
+</html>
